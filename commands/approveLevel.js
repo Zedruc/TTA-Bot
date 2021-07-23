@@ -62,17 +62,53 @@ module.exports = {
                 // average: (x+y) / 2
                 if (LevelInDatabase.approved === "half") {
                     var oldDiff = LevelInDatabase.difficulty;
-                    var newDiff = Math.round((oldDiff + Number(args[0])) / 2);
+                    var newDiff = (oldDiff + Number(args[0])) / 2;
                     const remainder = newDiff % 1;
-                    const int = Math.floor(newDiff);
+                    const int = Math.trunc(newDiff);
+                    console.log("\t Set 1");
+                    console.log(oldDiff);
+                    console.log(Number(args[0]));
+                    console.log(newDiff); // 3.5 and 3.5 result 4 ???
+                    console.log(remainder);
+                    console.log(int);
 
-                    if (remainder > .25) {
-                        newDiff = int + .5;
-                    } else if (remainder > .5) {
-                        newDiff = int + 1;
-                    } else if (remainder < .25) {
+                    if (oldDiff == Number(args[0])) {
+                        LevelInDatabase.difficulty = Number(args[0]);
+                        LevelInDatabase.approved = "true";
+                        LevelInDatabase.save();
+
+                        message.channel.setName(`✅${LevelChannel.name}`);
+
+                        var embed = new Discord.MessageEmbed()
+                            .setDescription(`Level Successfully approved with difficulty rating __${Number(args[0])}__!`)
+                            .setColor("#4BB543")
+                            .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }));
+                        notifyUser(message, args, client, Discord, cmd, profileData, LevelInDatabase);
+                        return message.channel.send(embed);
+                    }
+
+                    if (remainder < .25) {
                         newDiff = int;
                     }
+                    if (remainder >= .25 && remainder < .5) {
+                        newDiff = int + .5;
+                    }
+                    if (remainder == .5) {
+                        newDiff = int + .5;
+                    }
+                    if (remainder > .5 && remainder < .75) {
+                        newDiff = int + .5;
+                    }
+                    if (remainder >= .75) {
+                        newDiff = int + 1;
+                    }
+
+                    console.log("\t Set 2");
+                    console.log(oldDiff);
+                    console.log(Number(args[0]));
+                    console.log(newDiff); // 3.5 and 3.5 result 4 ???
+                    console.log(remainder);
+                    console.log(int);
 
                     LevelInDatabase.difficulty = newDiff;
                     LevelInDatabase.approved = "true";
