@@ -2,14 +2,28 @@ var profileModel = require('../models/profileSchema');
 var levelModel = require('../models/levelSchema');
 
 module.exports = {
-    name: "clear",
-    description: "Clear a level",
+    name: "set-clear",
+    description: "Set clear for a user",
     async execute(message, args, client, Discord, cmd, profileData) {
         // TTA clear level-id
         // Zeig vllt ähnliche level codes wenn der angegebene nd gefunden wird
 
+        if (!(message.member.roles.cache.some(r => r.name === "Judge" || r.name === "Moderator" || r.name === "Administrator" || r.name === "OwOner"))) {
+            var embed = new Discord.MessageEmbed()
+                .setDescription("You have to be a staff member to set a user's points!")
+                .setColor("#ff0000");
+            return message.channel.send(embed);
+        }
+
         var IdOfClearedLevel = args[0].toLowerCase();
-        var user = await profileModel.findOne({ userID: message.author.id });
+        var pinged = message.mentions.users.first();
+        if (!pinged) {
+            var embed = new Discord.MessageEmbed()
+                .setDescription(`You have to ping the user to set a clear for them!`)
+                .setColor("#ff0000");
+            return message.channel.send(embed);
+        }
+        var user = await profileModel.findOne({ userID: pinged.id });
         if (!user) {
             var embed = new Discord.MessageEmbed()
                 .setDescription(`Could not find your profile in the Team Time-Attack database.\nMake sure you are registered!`)
@@ -18,7 +32,7 @@ module.exports = {
         }
         if (user.clearedLevels.includes(IdOfClearedLevel)) {
             var embed = new Discord.MessageEmbed()
-                .setDescription(`You already submitted this clear!`)
+                .setDescription(`User already submitted this clear!`)
                 .setColor("#ff0000");
             return message.channel.send(embed);
         }
@@ -32,7 +46,7 @@ module.exports = {
         }
         if (level.creator == user.makerName) {
             var embed = new Discord.MessageEmbed()
-                .setDescription(`You cant clear your own level!`)
+                .setDescription(`Cant clear level the user made themselves!`)
                 .setColor("#ff0000");
             return message.channel.send(embed);
         }
