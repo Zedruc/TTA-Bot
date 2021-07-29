@@ -1,8 +1,9 @@
 module.exports = async (Discord, client, message) => {
     const prefix = "TTA ";
+    const alt_prefix = "!";
     const profileModel = require('../../models/profileSchema');
 
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    if (message.author.bot) return;
 
     var profileData;
 
@@ -22,11 +23,19 @@ module.exports = async (Discord, client, message) => {
     } catch (error) {
         console.log(error);
     }
+    if (message.content.startsWith(prefix)) {
+        const args = message.content.slice(prefix.length).split(/ +/);
+        const cmd = args.shift().toLowerCase();
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const cmd = args.shift().toLowerCase();
+        const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
 
-    const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
+        if (command) command.execute(message, args, client, Discord, cmd, profileData);
+    } else if (message.content.startsWith(alt_prefix)) {
+        const args = message.content.slice(alt_prefix.length).split(/ +/);
+        const cmd = args.shift().toLowerCase();
 
-    if (command) command.execute(message, args, client, Discord, cmd, profileData);
+        const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
+
+        if (command) command.execute(message, args, client, Discord, cmd, profileData);
+    } else return;
 }
