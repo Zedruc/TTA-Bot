@@ -74,7 +74,7 @@ module.exports = {
 
         if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) return;
 
-        message.guild.channels.create(args[0], { type: 'text' })
+        message.guild.channels.create(data.levelID, { type: 'text' })
             .then(channel => {
                 let category = message.guild.channels.cache.find(c => c.name == "Pending-Discussion" && c.type == "category");
 
