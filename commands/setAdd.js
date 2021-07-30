@@ -71,5 +71,20 @@ module.exports = {
             .setColor("#4BB543");
 
         message.channel.send(embed);
+
+        if (!message.guild.me.hasPermission('MANAGE_CHANNELS')) return;
+
+        message.guild.channels.create(args[0], { type: 'text' })
+            .then(channel => {
+                let category = message.guild.channels.cache.find(c => c.name == "Pending-Discussion" && c.type == "category");
+
+                if (!category) throw new Error("Category channel does not exist");
+                channel.setParent(category.id);
+
+                var embed = new Discord.MessageEmbed()
+                    .setTitle(`${message.content.slice(19, message.content.length)} (${args[0]}) by ${profileData.makerName}`)
+                    .setFooter("Do NOT edit the channel name to keep the level process automated.");
+                channel.send(embed);
+            }).catch(console.error);
     }
 }
