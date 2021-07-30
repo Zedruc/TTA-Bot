@@ -82,7 +82,7 @@ module.exports = {
                 channel.setParent(category.id);
 
                 var embed = new Discord.MessageEmbed()
-                    .setTitle(`${message.content.slice(19, message.content.length)} (${args[0]}) by ${profileData.makerName}`)
+                    .setTitle(`${data.levelName} (${data.levelID}) by ${data.creator}`)
                     .setFooter("Do NOT edit the channel name to keep the level process automated.");
                 channel.send(embed);
             }).catch(console.error);
