@@ -3,7 +3,7 @@ const levelModel = require('../models/levelSchema');
 module.exports = {
     name: "add",
     description: "Add a level to wait for level approval",
-    async execute(message, args, client, Discord, cmd, profileData) {
+    async execute(message, args, client, Discord, cmd, profileData, prefix) {
         if (profileData == null) {
             var embed = new Discord.MessageEmbed()
                 .setTitle("Please register with `TTA register <Maker Name>` to add a level to the approval queue.")
@@ -27,7 +27,7 @@ module.exports = {
         }
 
         // level name starts at message content index 19
-        var name = message.content.slice(19, message.content.length);
+        var name = message.content.slice(15 + prefix.length, message.content.length);
         while (name.charAt(0) === " ") name = name.substring(1);
         var level = await levelModel.create({
             levelID: args[0].toLowerCase(),
@@ -40,7 +40,7 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setColor("#4BB543")
             .setTitle("Level successfully registered!")
-            .setDescription(`Your level ${message.content.slice(19, message.content.length)} (${args[0]}) will soon be reviewed.`)
+            .setDescription(`Your level ${message.content.slice(15 + prefix.length, message.content.length)} (${args[0]}) will soon be reviewed.`)
             .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }))
 
         message.channel.send(embed);
@@ -55,7 +55,7 @@ module.exports = {
                 channel.setParent(category.id);
 
                 var embed = new Discord.MessageEmbed()
-                    .setTitle(`${message.content.slice(19, message.content.length)} (${args[0]}) by ${profileData.makerName}`)
+                    .setTitle(`${message.content.slice(15 + prefix.length, message.content.length)} (${args[0]}) by ${profileData.makerName}`)
                     .setFooter("Do NOT edit the channel name to keep the level process automated.");
                 channel.send(embed);
             }).catch(console.error);

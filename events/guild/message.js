@@ -29,13 +29,13 @@ module.exports = async (Discord, client, message) => {
 
         const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
 
-        if (command) command.execute(message, args, client, Discord, cmd, profileData);
+        if (command) command.execute(message, args, client, Discord, cmd, profileData, prefix);
     } else if (message.content.startsWith(alt_prefix)) {
         const args = message.content.slice(alt_prefix.length).split(/ +/);
         const cmd = args.shift().toLowerCase();
 
         const command = client.commands.get(cmd) || client.commands.find(a => a.aliases && a.aliases.includes(cmd));
 
-        if (command) command.execute(message, args, client, Discord, cmd, profileData);
+        if (command) command.execute(message, args, client, Discord, cmd, profileData, alt_prefix);
     } else return;
 }

@@ -3,7 +3,7 @@ var levelModel = require('../models/levelSchema');
 module.exports = {
     name: "info",
     description: "Get details about a level",
-    async execute(message, args, client, Discord, cmd, profileData) {
+    async execute(message, args, client, Discord, cmd, profileData, prefix) {
         if (args.length === 0) {
             var embed = new Discord.MessageEmbed()
                 .setDescription("You have to provide a level name or an ID!\n\`TTA info <Level Name | Level ID>\`")
@@ -11,7 +11,7 @@ module.exports = {
             return message.channel.send(embed);
         }
 
-        var query = message.content.slice(9, message.content.length);
+        var query = message.content.slice(5 + prefix.length, message.content.length);
         var level = await levelModel.findOne({ levelID: query }); // try to find level by id
 
         if (!level) {

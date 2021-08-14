@@ -4,11 +4,11 @@ const levelModel = require('../models/levelSchema');
 module.exports = {
     name: "register",
     description: "Register with maker name and maker id",
-    async execute(message, args, client, Discord, cmd, profileData) {
+    async execute(message, args, client, Discord, cmd, profileData, prefix) {
         if (profileData == null) {
             profileData = await profileModel.findOne({ userID: message.author.id });
         }
-        const name = message.content.slice(13, message.content.length);
+        const name = message.content.slice(9 + prefix.length, message.content.length);
         if (name === "<UNREGISTERED>") {
             return message.channel.send("You cant name yourself <UNREGISTERED>.");
         }

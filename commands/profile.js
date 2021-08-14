@@ -4,7 +4,7 @@ const profileModel = require('../models/profileSchema');
 module.exports = {
     name: "profile",
     description: "Shows profile of user",
-    async execute(message, args, client, Discord, cmd, profileData) {
+    async execute(message, args, client, Discord, cmd, profileData, prefix) {
         if (profileData == null) {
             var embed = new Discord.MessageEmbed()
                 .setDescription(`You have to be registered to use this command!\n\`TTA register <Maker Name>\``)
@@ -21,7 +21,7 @@ module.exports = {
 
         if (!ping) {
             if (args[0]) {
-                var name = message.content.slice(12, message.content.length);
+                var name = message.content.slice(8 + prefix.length, message.content.length);
 
                 var userInDB = await profileModel.findOne({ makerName: name });
                 if (!userInDB) {
