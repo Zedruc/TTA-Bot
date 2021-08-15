@@ -118,10 +118,15 @@ module.exports = {
         });
 
         try {
-            const levelChannel = message.guild.channels.cache.find(channel => channel.name === level.levelID);
+            const levelChannel = message.guild.channels.cache.find(
+                channel => channel.name === level.levelID
+                    || channel.name === `✅${level.levelID}`
+                    || channel.name === `✅📗${level.levelID}`
+                    || channel.name === `📗${level.levelID}`
+            );
             levelChannel.delete();
         } catch (error) {
-            console.log('');
+            console.log(error.message);
         }
 
         message.channel.send(embed);

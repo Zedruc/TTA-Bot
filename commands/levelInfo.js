@@ -46,6 +46,10 @@ module.exports = {
                 ? embed.addField("Status", "Approved").addField("Difficulty", `${level.difficulty}`)
                 : embed.addField("Status", "Pending");
 
+            embed.addField("Likes", level.likes);
+
+            embed.addField("Dislikes", level.dislikes);
+
             if (level.tags.length > 0) {
                 embed.addField("Tags", "============");
                 for (const tag of level.tags) {
@@ -66,6 +70,10 @@ module.exports = {
         (level.approved == "true")
             ? embed.addField("Status", "Approved").addField("Difficulty", `${level.difficulty}`)
             : embed.addField("Status", "Pending");
+
+        embed.addField("Likes", level.likes);
+
+        embed.addField("Dislikes", level.dislikes);
 
         if (level.tags.length > 0) {
             embed.addField("Tags", "============");

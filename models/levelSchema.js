@@ -18,6 +18,12 @@ const levelSchema = new mongoose.Schema({
     },
     tags: {
         type: Array, default: []
+    },
+    likes: {
+        type: Number, default: 0
+    },
+    dislikes: {
+        type: Number, default: 0
     }
 });
 

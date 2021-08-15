@@ -40,6 +40,14 @@ module.exports = {
         user.clearedLevels.push(IdOfClearedLevel);
         user.save();
 
+        if (args[args.length - 1].toLowerCase() === "like" || "heart") {
+            level.likes = level.likes + 1;
+            level.save();
+        } else if (args[args.length - 1].toLowerCase() === "dislike" || "boo") {
+            level.dislikes = level.dislikes + 1;
+            level.save();
+        }
+
         if (level.approved == "true") {
             user = await profileModel.findOne({ userID: message.author.id });
             user.points += level.difficulty;
