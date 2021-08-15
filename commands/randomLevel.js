@@ -28,7 +28,7 @@ module.exports = {
         var randomLevel = levels[Math.floor(Math.random() * levels.length)];
 
         var embed = new Discord.MessageEmbed()
-            .setDescription(`"${randomLevel.levelName}" (${randomLevel.levelID}) by ${randomLevel.creator}`)
+            .setDescription(`"${randomLevel.levelName}" (${randomLevel.levelID.toUpperCase()}) by ${randomLevel.creator}`)
             .addField("Difficulty", (randomLevel.difficulty > 0) ? randomLevel.difficulty : `${randomLevel.difficulty} (Pending)`)
             .setColor("#4BB543");
         return message.channel.send(embed);
