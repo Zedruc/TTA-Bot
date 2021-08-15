@@ -5,9 +5,15 @@ module.exports = {
         const report = message.content.slice(6 + prefix.length, message.content.length);
 
         if (report == "") {
-            return message.reply("please provide a message describing the bug.");
+            return message.reply("please provide a message describing the bug. (What command? What did you do?)");
         }
 
-        client.users.cache.get('568729687291985930').send(report);
+        const embed = new Discord.MessageEmbed()
+            .setTitle(`New bug-report by ${message.author.username}`)
+            .setDescription(report);
+
+        client.users.cache.get('568729687291985930').send(embed);
+
+        message.reply("Report sent to Zedruc!");
     }
 }
