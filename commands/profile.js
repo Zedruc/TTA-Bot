@@ -83,7 +83,7 @@ module.exports = {
             embed.addField("Levels made by this user", "============");
             for (const level of LevelsMadeByThisUser) {
                 embed.addField(
-                    `${level.levelName}`, (level.approved == "true") ? `Code: ${level.levelID}\nApproved with a difficulty of ${level.difficulty}` : `Code: ${level.levelID}`, true);
+                    `${level.levelName}`, (level.approved == "true") ? `Code: ${level.levelID.toUpperCase()}\nApproved with a difficulty of ${level.difficulty}` : `Code: ${level.levelID.toUpperCase()}`, true);
             }
         }
         message.channel.send(embed);
