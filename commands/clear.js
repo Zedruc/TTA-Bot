@@ -48,12 +48,10 @@ module.exports = {
         }
 
         user.clearedLevels.push(IdOfClearedLevel);
-        user.save();
 
         if (level.approved == "true") {
             user = await profileModel.findOne({ userID: message.author.id });
             user.points += level.difficulty;
-            user.save();
 
             var Roles = {
                 OfficialMember_Role: {
@@ -96,6 +94,8 @@ module.exports = {
                 }
             }
         }
+
+        user.save();
 
         var embed = new Discord.MessageEmbed()
             .setDescription(`Successfully submitted the clear of "${level.levelName}" by ${level.creator}`)
