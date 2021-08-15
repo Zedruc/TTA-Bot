@@ -16,7 +16,7 @@ module.exports = {
             return message.channel.send(embed);
         }
 
-        var level = levelModel.findOne({ levelID: levelID });
+        var level = await levelModel.findOne({ levelID: levelID });
         if (!level) {
             var embed = new Discord.MessageEmbed()
                 .setDescription(`Could not find the level you tried to add a clear-video to. Check the spelling of the level code.`)
@@ -42,5 +42,14 @@ module.exports = {
         }
 
         level.clearVideos.push(args[1]);
+        level.save();
+
+        var embed = new Discord.MessageEmbed()
+            .setTitle(`Succesfully submitted clear-video for "${level.levelName}" by ${level.creator}`)
+            .addField('Videos', ` \`\`\`${level.clearVideos.join("\n")}\`\`\` `)
+            .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }))
+            .setColor("#8DD158")
+
+        message.channel.send(embed);
     }
 }
