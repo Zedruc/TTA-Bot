@@ -17,6 +17,10 @@ module.exports = {
         var NameIsAlreadyRegistered = await profileModel.findOne({ makerName: name });
         if (NameIsAlreadyRegistered) return message.channel.send(`The name ${name} is already registered by <@${NameIsAlreadyRegistered.userID}>!`);
 
+        if (name == "") {
+            name = message.author.username;
+        }
+
         levelModel.find({ creator: profileData.makerName }, (err, levels) => {
             if (err) throw err;
 

@@ -135,7 +135,7 @@ async function notifyUser(message, args, client, Discord, cmd, profileData, leve
 
     var user = await profileModel.findOne({ makerName: level.creator });
     if (!user) {
-        return message.reply("Could not find the creator of the level, unable to notify the level creator.");
+        return message.reply("Could not find the creator of the level, unable to notify them.");
     }
 
     feedbackChannel.send(`<@${user.userID}>`);
