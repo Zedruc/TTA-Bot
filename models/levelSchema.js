@@ -24,6 +24,9 @@ const levelSchema = new mongoose.Schema({
     },
     dislikes: {
         type: Number, default: 0
+    },
+    clearVideos: {
+        type: Array, default: []
     }
 });
 

@@ -15,6 +15,12 @@ const profileSchema = new mongoose.Schema({
     },
     clearedLevels: {
         type: Array, default: []
+    },
+    likedLevels: {
+        type: Array, default: []
+    },
+    dislikedLevels: {
+        type: Array, default: []
     }
 });
 
