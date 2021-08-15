@@ -68,6 +68,17 @@ module.exports = {
             .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }))
             .setColor("#8DD158")
         if (profileData.makerName) embed.addField("Maker Name", profileData.makerName);
+        var totalLikes = 0;
+        var totalDislikes = 0;
+
+        for (const level of LevelsMadeByThisUser) {
+            totalLikes += level.likes;
+            totalDislikes += level.dislikes;
+        }
+
+        embed.addField("Total likes", totalLikes);
+        embed.addField("Total dislikes", totalDislikes);
+
         if (LevelsMadeByThisUser.length) {
             embed.addField("Levels made by this user", "============");
             for (const level of LevelsMadeByThisUser) {
