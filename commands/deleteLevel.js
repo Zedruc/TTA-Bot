@@ -18,8 +18,8 @@ module.exports = {
             return message.channel.send(embed);
         }
 
-        if (!args.length) return message.channel.send("Please provide a level id!\n`TTA delete lev-elc-ode`");
-        if (!args[0].length == 11) return message.channel.send("Please provide a __valid__ level id!\n`TTA delete lev-elc-ode`");
+        if (!args.length) return message.channel.send("Please provide a level id!\n`TTA delete <lev-elc-ode>`");
+        if (!args[0].length == 11) return message.channel.send("Please provide a __valid__ level id!\n`TTA delete <lev-elc-ode>`");
 
         const level = await levelModel.findOne({ levelID: args[0].toLowerCase() });
         if (!level) {
