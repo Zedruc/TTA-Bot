@@ -1,6 +1,40 @@
 const levelModel = require('../models/levelSchema');
 const profileModel = require('../models/profileSchema');
 
+
+var Roles = {
+    OfficialMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Official Member"),
+        points: 12.5,
+        name: "Official Member"
+    },
+    AdvancedMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
+        points: 25,
+        name: "Advanced Member"
+    },
+    ExpertMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
+        points: 50,
+        name: "Expert Member"
+    },
+    TTA_Master_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
+        points: 100,
+        name: "TTA-Master"
+    },
+    TTA_Grandmaster_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
+        points: 200,
+        name: "TTA-Grandmaster"
+    },
+    TTA_Legend_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
+        points: 500,
+        name: "TTA-Legend"
+    },
+}
+
 module.exports = {
     name: "delete",
     description: "Delete one of your levels from the Team Time-Attack database",
@@ -61,38 +95,6 @@ module.exports = {
                     }
                     user.save();
 
-                    var Roles = {
-                        OfficialMember_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "Official Member"),
-                            points: 12.5,
-                            name: "Official Member"
-                        },
-                        AdvancedMember_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
-                            points: 25,
-                            name: "Advanced Member"
-                        },
-                        ExpertMember_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
-                            points: 50,
-                            name: "Expert Member"
-                        },
-                        TTA_Master_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
-                            points: 100,
-                            name: "TTA-Master"
-                        },
-                        TTA_Grandmaster_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
-                            points: 200,
-                            name: "TTA-Grandmaster"
-                        },
-                        TTA_Legend_Role: {
-                            role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
-                            points: 500,
-                            name: "TTA-Legend"
-                        },
-                    }
                     var member = message.guild.members.cache.get(user.userID);
 
                     for (const role in Roles) {
@@ -104,6 +106,21 @@ module.exports = {
                 }
             });
         });
+
+        var _ = await levelModel.findOne({ levelID: args[0].toLowerCase() });
+        var creator = profileModel.findOne({ makerName: _.creator });
+        var _member = message.guild.members.cache.get(creator.userID);
+
+        creator.points -= _.difficulty;
+
+        for (const role in Roles) {
+            if (creator.points >= Roles[role].points) _member.roles.add(Roles[role].role);
+            if (_member.roles.cache.find(r => r.name === Roles[role].name)) {
+                if (creator.points < Roles[role].points) _member.roles.remove(Roles[role].role);
+            }
+        }
+
+        creator.save();
 
         levelModel.deleteOne({ levelID: args[0].toLowerCase() }, (err) => {
             if (err) {

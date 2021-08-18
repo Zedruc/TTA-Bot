@@ -1,4 +1,38 @@
 const levelModel = require('../models/levelSchema');
+const profileModel = require('../models/profileSchema');
+
+var Roles = {
+    OfficialMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Official Member"),
+        points: 12.5,
+        name: "Official Member"
+    },
+    AdvancedMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
+        points: 25,
+        name: "Advanced Member"
+    },
+    ExpertMember_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
+        points: 50,
+        name: "Expert Member"
+    },
+    TTA_Master_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
+        points: 100,
+        name: "TTA-Master"
+    },
+    TTA_Grandmaster_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
+        points: 200,
+        name: "TTA-Grandmaster"
+    },
+    TTA_Legend_Role: {
+        role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
+        points: 500,
+        name: "TTA-Legend"
+    },
+}
 
 module.exports = {
     name: "force-delete",
@@ -38,6 +72,39 @@ module.exports = {
             .setTitle(`Deleted "${level.levelName}" (\`${level.levelID}\`) by ${level.creator}`)
             .setDescription(`Reason:\n${reason}`)
             .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }));
+        var _ = await levelModel.findOne({ levelID: args[0].toLowerCase() });
+        var creator = profileModel.findOne({ makerName: _.creator });
+
+        creator.points -= _.difficulty;
+        creator.save();
+
+        profileModel.find({}, (err, users) => {
+            if (err) throw err;
+
+            // =============================================================================
+            // Remove the level from every users cleared level list and decrement the points
+            // =============================================================================
+
+            users.forEach(user => {
+                if (user.clearedLevels.includes(level.levelID)) {
+                    user.points -= level.difficulty;
+                    var index = user.clearedLevels.indexOf(level.levelID);
+                    if (index > -1) {
+                        user.clearedLevels.splice(index, 1);
+                    }
+                    user.save();
+
+                    var member = message.guild.members.cache.get(user.userID);
+
+                    for (const role in Roles) {
+                        if (user.points >= Roles[role].points) member.roles.add(Roles[role].role);
+                        if (member.roles.cache.find(r => r.name === Roles[role].name)) {
+                            if (user.points < Roles[role].points) member.roles.remove(Roles[role].role);
+                        }
+                    }
+                }
+            });
+        });
 
         levelModel.deleteOne({ levelID: args[0].toLowerCase() }, (err) => {
             if (err) {
@@ -50,6 +117,7 @@ module.exports = {
                 return message.channel.send(embed);
             }
         });
+
 
         try {
             const levelChannel = message.guild.channels.cache.find(
