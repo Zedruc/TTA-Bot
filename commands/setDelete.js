@@ -73,7 +73,7 @@ module.exports = {
             .setDescription(`Reason:\n${reason}`)
             .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }));
         var _ = await levelModel.findOne({ levelID: args[0].toLowerCase() });
-        var creator = profileModel.findOne({ makerName: _.creator });
+        var creator = await profileModel.findOne({ makerName: _.creator });
 
         creator.points -= _.difficulty;
         creator.save();

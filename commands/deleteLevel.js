@@ -107,7 +107,7 @@ module.exports = {
         });
 
         var _ = await levelModel.findOne({ levelID: args[0].toLowerCase() });
-        var creator = profileModel.findOne({ makerName: _.creator });
+        var creator = await profileModel.findOne({ makerName: _.creator });
         var _member = message.guild.members.cache.get(creator.userID);
 
         creator.points -= _.difficulty;
