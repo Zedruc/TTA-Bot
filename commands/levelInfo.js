@@ -12,7 +12,7 @@ module.exports = {
         }
 
         var query = message.content.slice(5 + prefix.length, message.content.length);
-        var level = await levelModel.findOne({ levelID: query }); // try to find level by id
+        var level = await levelModel.findOne({ levelID: query.toLowerCase() }); // try to find level by id
 
         if (!level) {
             level = await levelModel.findOne({ levelName: query }); // try to find level by name
