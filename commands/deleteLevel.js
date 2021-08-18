@@ -1,44 +1,43 @@
 const levelModel = require('../models/levelSchema');
 const profileModel = require('../models/profileSchema');
 
-
-var Roles = {
-    OfficialMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Official Member"),
-        points: 12.5,
-        name: "Official Member"
-    },
-    AdvancedMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
-        points: 25,
-        name: "Advanced Member"
-    },
-    ExpertMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
-        points: 50,
-        name: "Expert Member"
-    },
-    TTA_Master_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
-        points: 100,
-        name: "TTA-Master"
-    },
-    TTA_Grandmaster_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
-        points: 200,
-        name: "TTA-Grandmaster"
-    },
-    TTA_Legend_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
-        points: 500,
-        name: "TTA-Legend"
-    },
-}
-
 module.exports = {
     name: "delete",
     description: "Delete one of your levels from the Team Time-Attack database",
     async execute(message, args, client, Discord, cmd, profileData) {
+        var Roles = {
+            OfficialMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Official Member"),
+                points: 12.5,
+                name: "Official Member"
+            },
+            AdvancedMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
+                points: 25,
+                name: "Advanced Member"
+            },
+            ExpertMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
+                points: 50,
+                name: "Expert Member"
+            },
+            TTA_Master_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
+                points: 100,
+                name: "TTA-Master"
+            },
+            TTA_Grandmaster_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
+                points: 200,
+                name: "TTA-Grandmaster"
+            },
+            TTA_Legend_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
+                points: 500,
+                name: "TTA-Legend"
+            },
+        }
+
         if (profileData == null) {
             var embed = new Discord.MessageEmbed()
                 .setTitle("Please register with `TTA register <Maker Name>` to delete a level from approval queue.")

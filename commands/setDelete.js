@@ -1,39 +1,6 @@
 const levelModel = require('../models/levelSchema');
 const profileModel = require('../models/profileSchema');
 
-var Roles = {
-    OfficialMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Official Member"),
-        points: 12.5,
-        name: "Official Member"
-    },
-    AdvancedMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
-        points: 25,
-        name: "Advanced Member"
-    },
-    ExpertMember_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
-        points: 50,
-        name: "Expert Member"
-    },
-    TTA_Master_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
-        points: 100,
-        name: "TTA-Master"
-    },
-    TTA_Grandmaster_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
-        points: 200,
-        name: "TTA-Grandmaster"
-    },
-    TTA_Legend_Role: {
-        role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
-        points: 500,
-        name: "TTA-Legend"
-    },
-}
-
 module.exports = {
     name: "force-delete",
     description: "Delete a level",
@@ -43,6 +10,39 @@ module.exports = {
                 .setDescription("You have to be a staff member to delete a user's level!")
                 .setColor("#ff0000");
             return message.channel.send(embed);
+        }
+
+        var Roles = {
+            OfficialMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Official Member"),
+                points: 12.5,
+                name: "Official Member"
+            },
+            AdvancedMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Advanced Member"),
+                points: 25,
+                name: "Advanced Member"
+            },
+            ExpertMember_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "Expert Member"),
+                points: 50,
+                name: "Expert Member"
+            },
+            TTA_Master_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Master"),
+                points: 100,
+                name: "TTA-Master"
+            },
+            TTA_Grandmaster_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Grandmaster"),
+                points: 200,
+                name: "TTA-Grandmaster"
+            },
+            TTA_Legend_Role: {
+                role: message.guild.roles.cache.find(r => r.name === "TTA-Legend"),
+                points: 500,
+                name: "TTA-Legend"
+            },
         }
 
         const levelID = args[0].toLowerCase();
