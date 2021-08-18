@@ -192,6 +192,11 @@ module.exports = {
                 });
             });
 
+            var creator = await profileModel.findOne({ makerName: LevelInDatabase.creator });
+
+            creator.points += LevelInDatabase.difficulty;
+            creator.save();
+
             var embed = new Discord.MessageEmbed()
                 .setDescription(`Level Successfully approved with difficulty rating __${args[0]}__!`)
                 .setColor("#4BB543")
