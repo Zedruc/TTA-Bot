@@ -4,6 +4,9 @@ module.exports = async (Discord, client, message) => {
     const profileModel = require('../../models/profileSchema');
 
     if (message.author.bot) return;
+    // if (!(message.author.id === '568729687291985930')) {
+    // return message.reply('Sorry! Currently only Nofu can use the bot since theres a bug causing clears not being saved.');
+    // }
 
     var profileData;
 
