@@ -75,6 +75,13 @@ module.exports = {
 
         embed.addField("Dislikes", level.dislikes);
 
+        if (level.clearVideos.length > 0) {
+            embed.addField("Clear Videos", "============");
+            for (const videoLink of level.clearVideos) {
+                embed.addField(videoLink, "\u200B", true);
+            }
+        }
+
         if (level.tags.length > 0) {
             embed.addField("Tags", "============");
             for (const tag of level.tags) {

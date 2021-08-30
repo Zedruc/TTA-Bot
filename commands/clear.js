@@ -16,6 +16,12 @@ module.exports = {
                 .setColor("#ff0000");
             return message.channel.send(embed);
         }
+        if (user.makerName === '<UNREGISTERED>') {
+            var embed = new Discord.MessageEmbed()
+                .setDescription(`Could not find your profile in the Team Time-Attack database.\nMake sure you are registered!`)
+                .setColor("#ff0000");
+            return message.channel.send(embed);
+        }
         if (user.clearedLevels.includes(IdOfClearedLevel)) {
             var embed = new Discord.MessageEmbed()
                 .setDescription(`You already submitted this clear!`)
@@ -96,6 +102,7 @@ module.exports = {
         }
 
         user.save();
+        console.log("SAVE!!!!!!!!!!!!!");
 
         var embed = new Discord.MessageEmbed()
             .setDescription(`Successfully submitted the clear of "${level.levelName}" by ${level.creator}`)
