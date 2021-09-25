@@ -1,5 +1,5 @@
 const levelModel = require('../models/levelSchema');
-const FILTERS = ['tag', 'creator', 'difficulty'];
+const FILTERS = ['tag', 'creator', 'difficulty', 'approved'];
 
 module.exports = {
     name: "list",
@@ -35,6 +35,8 @@ module.exports = {
                 case 'difficulty':
                     createList({ 'difficulty': Number(filterArg) });
                     break;
+                case 'approved':
+                    createList({ 'approved': filterArg });
                 default:
                     break;
             }
