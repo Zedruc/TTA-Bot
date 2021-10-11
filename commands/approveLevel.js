@@ -65,12 +65,6 @@ module.exports = {
                     var newDiff = (oldDiff + Number(args[0])) / 2;
                     const remainder = newDiff % 1;
                     const int = Math.trunc(newDiff);
-                    console.log("\t Set 1");
-                    console.log(oldDiff);
-                    console.log(Number(args[0]));
-                    console.log(newDiff); // 3.5 and 3.5 result 4 ???
-                    console.log(remainder);
-                    console.log(int);
 
                     if (oldDiff == Number(args[0])) {
                         LevelInDatabase.difficulty = Number(args[0]);
@@ -102,13 +96,6 @@ module.exports = {
                     if (remainder >= .75) {
                         newDiff = int + 1;
                     }
-
-                    console.log("\t Set 2");
-                    console.log(oldDiff);
-                    console.log(Number(args[0]));
-                    console.log(newDiff); // 3.5 and 3.5 result 4 ???
-                    console.log(remainder);
-                    console.log(int);
 
                     LevelInDatabase.difficulty = newDiff;
                     LevelInDatabase.approved = "true";

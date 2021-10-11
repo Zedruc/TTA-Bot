@@ -5,20 +5,13 @@ module.exports = {
     name: "list",
     description: "Show a list of all specified levels",
     async execute(message, args, client, Discord, cmd, profileData, prefix) {
-        if (!(message.member.roles.cache.some(r => r.name === "Judge" || r.name === "Moderator" || r.name === "Administrator" || r.name === "OwOner"))) {
-            var embed = new Discord.MessageEmbed()
-                .setDescription("You have to be a staff member to view the level list!")
-                .setColor("#ff0000");
-            return message.channel.send(embed);
-        }
-
         if (args.length == 0) {
             createList({});
         }
         if (args[0]) {
             if (!(FILTERS.includes(args[0]))) {
                 var embed = new Discord.MessageEmbed()
-                    .setDescription(`${args[0]} isn't a valid filter.`)
+                    .setDescription(`${args[0]} isn't a valid filter.\nFilters: \`${FILTERS.join(', ')}\``)
                     .setColor("#ff0000");
                 return message.channel.send(embed);
             }

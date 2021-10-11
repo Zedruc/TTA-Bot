@@ -12,6 +12,13 @@ module.exports = {
             return message.channel.send(embed);
         }
 
+        if (!args[0]) {
+            var embed = new Discord.MessageEmbed()
+                .setDescription("You have to provide the ID of the level you want to delete!")
+                .setColor("#ff0000");
+            return message.channel.send(embed);
+        }
+
         var Roles = {
             OfficialMember_Role: {
                 role: message.guild.roles.cache.find(r => r.name === "Official Member"),
@@ -72,11 +79,19 @@ module.exports = {
             .setTitle(`Deleted "${level.levelName}" (\`${level.levelID}\`) by ${level.creator}`)
             .setDescription(`Reason:\n${reason}`)
             .setFooter("#TTA", client.user.displayAvatarURL({ format: "png" }));
-        var _ = await levelModel.findOne({ levelID: args[0].toLowerCase() });
+        var _ = await levelModel.findOne({ levelID: levelID });
         var creator = await profileModel.findOne({ makerName: _.creator });
 
-        creator.points -= _.difficulty;
-        creator.save();
+        if (!creator) {
+            var embed = new Discord.MessageEmbed()
+                .setDescription(`[Process Info] Creator of the level does not exist in the database anymore, ignoring it.`)
+                .setColor("#FF631A");
+            message.channel.send(embed);
+        }
+        if (creator) {
+            creator.points -= _.difficulty;
+            creator.save();
+        }
 
         profileModel.find({}, (err, users) => {
             if (err) throw err;
@@ -128,7 +143,7 @@ module.exports = {
             );
             levelChannel.delete();
         } catch (error) {
-            console.log(error.message);
+            console.log(`Error deleting level channel: ${error.message}`);
         }
 
         message.channel.send(embed);
