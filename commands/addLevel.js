@@ -17,6 +17,13 @@ module.exports = {
             return message.channel.send(embed);
         }
 
+        if (profileData.points <= 12.5) {
+            var embed = new Discord.MessageEmbed()
+                .setTitle("You need at least 12.5 points to submit your first level.")
+                .setColor("#ff0000")
+            return message.channel.send(embed);
+        }
+
         if (!args.length) return message.channel.send("Please provide a level id!\n`TTA add <lev-elc-ode>`");
         if (!(args[0].length == 11)) return message.channel.send("Please provide a __valid__ level id!\n`TTA <add lev-elc-ode>`");
         if (!args[1]) return message.channel.send("Please provide a level name!\n`TTA add lev-elc-ode <level name>`");
